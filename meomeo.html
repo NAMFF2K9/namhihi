@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang web kinh dị</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        #reloadIcon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 100px;
+            color: white;
+            cursor: pointer;
+            animation: pulse 1.5s infinite;
+            z-index: 10;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        #scaryImage {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(4); /* Thu nhỏ ảnh xuống 90% */
+            width: auto;
+            height: auto;
+            object-fit: cover;
+            z-index: 5;
+            pointer-events: none;
+            transition: filter 0.1s ease-in-out;  /* Thêm hiệu ứng mượt mà */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="reloadIcon">🔄</div>
+
+    <!-- Ảnh ma -->
+    <img id="scaryImage" src="https://tse3.mm.bing.net/th?id=OIP.T0UMubODkHafhFSCfkb15AHaMr&pid=Api&P=0&h=180" alt="Scary Face">
+
+    <!-- Âm thanh ma khóc -->
+    <audio id="scarySound" src="https://tiengdong.com/wp-content/uploads/Tieng-ma-khoc-www_tiengdong_com.mp3"></audio>
+
+    <script>
+        const reloadIcon = document.getElementById('reloadIcon');
+        const scaryImage = document.getElementById('scaryImage');
+        const scarySound = document.getElementById('scarySound');
+
+        reloadIcon.addEventListener('click', function() {
+            reloadIcon.style.display = 'none';
+            scaryImage.style.display = 'block';
+            scarySound.play().catch(e => console.warn('Không thể phát âm thanh:', e));
+            flashImage();
+        });
+
+        function flashImage() {
+            let opacityLevels = [0.2, 0.5, 0.8, 1];
+            let brightnessLevels = ['brightness(3)', 'brightness(3.5)', 'brightness(3)', 'brightness(3.5)']; // Độ sáng tăng
+            let index = 0;
+            setInterval(() => {
+                scaryImage.style.filter = brightnessLevels[index] + ' ' + 'opacity(' + opacityLevels[index] + ')';
+                index = (index + 1) % opacityLevels.length;  // Lặp lại hiệu ứng sáng tối
+            }, 40);  // Thay đổi mỗi 40ms (nhấp nháy cực nhanh)
+        }
+    </script>
+
+</body>
+</html>
